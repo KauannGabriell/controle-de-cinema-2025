@@ -24,7 +24,6 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Configuração de serviços personalizados
         builder.Services.AddScoped<AutenticacaoAppService>();
 
         builder.Services.AddScoped<SessaoAppService>();
