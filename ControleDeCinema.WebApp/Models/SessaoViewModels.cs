@@ -181,3 +181,37 @@ public class ComprarIngressoViewModel
             .ToList();
     }
 }
+
+public class DetalhesIngressoViewModel
+{
+    public Guid SessaoId { get; set; }
+    public DateTime Inicio { get; set; }
+    public string Filme { get; set; }
+    public int Sala { get; set; }
+    public int Assento { get; set; }
+    public bool MeiaEntrada { get; set; }
+
+    public DetalhesIngressoViewModel() { }
+
+    public DetalhesIngressoViewModel(Guid sessaoId, DateTime inicio, string filme, int sala, int assento, bool meiaEntrada)
+    {
+        SessaoId = sessaoId;
+        Inicio = inicio.ToLocalTime();
+        Filme = filme;
+        Sala = sala;
+        Assento = assento;
+        MeiaEntrada = meiaEntrada;
+    }
+
+    public static DetalhesIngressoViewModel ParaDetalhesVm(Ingresso ingresso)
+    {
+        return new DetalhesIngressoViewModel(
+            ingresso.Sessao.Id,
+            ingresso.Sessao.Inicio,
+            ingresso.Sessao.Filme.Titulo,
+            ingresso.Sessao.Sala.Numero,
+            ingresso.NumeroAssento,
+            ingresso.MeiaEntrada
+        );
+    }
+}
