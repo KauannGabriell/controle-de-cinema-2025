@@ -1,7 +1,17 @@
 ﻿
 
+using ControleDeCinema.Dominio.ModuloFilme;
+using ControleDeCinema.Dominio.ModuloGeneroFilme;
+using ControleDeCinema.Dominio.ModuloSala;
+using ControleDeCinema.Dominio.ModuloSessao;
 using ControleDeCinema.Infraestrutura.Orm.Compartilhado;
+using ControleDeCinema.Infraestrutura.Orm.ModuloFilme;
+using ControleDeCinema.Infraestrutura.Orm.ModuloGeneroFilme;
+using ControleDeCinema.Infraestrutura.Orm.ModuloSala;
+using ControleDeCinema.Infraestrutura.Orm.ModuloSessao;
+using FizzWare.NBuilder;
 using System.ComponentModel;
+using Testcontainers.MsSql;
 
 namespace Duobingo.Testes.Integracao.Compartilhado
 {
@@ -10,6 +20,12 @@ namespace Duobingo.Testes.Integracao.Compartilhado
     public abstract class TestFixture
     {
         protected ControleDeCinemaDbContext dbContext;
+        protected RepositorioGeneroFilmeEmOrm repositorioGenero;
+        protected RepositorioIngressoEmOrm repositorioIngresso;
+        protected RepositorioFilmeEmOrm repositorioFilme;
+        protected RepositorioSessaoEmOrm repositorioSessao;
+        protected RepositorioSalaEmOrm repositorioSala;
+
         private static MsSqlContainer container;
         public TestFixture()
         {
@@ -50,27 +66,25 @@ namespace Duobingo.Testes.Integracao.Compartilhado
             if (container is null)
                 throw new Exception("O banco dados não foi inicializado");
 
-            dbContext = TesteDbContextFactory.CriarDbContext(container.GetConnectionString());
+            dbContext = ControleDeCinemaDbContextFactory.CriarDbContext(container.GetConnectionString());
             ConfigurarTabelas(dbContext);
 
-            repositorioQuestoes = new RepositorioQuestoesEmOrm(dbContext);
-            repositorioDisciplina = new RepositorioDisciplinaEmOrm(dbContext);
-            repositorioMateria = new RepositorioMateriaEmOrm(dbContext);
 
-            BuilderSetup.SetCreatePersistenceMethod<Disciplina>(repositorioDisciplina.CadastrarRegistro);
-            BuilderSetup.SetCreatePersistenceMethod<Materia>(repositorioMateria.CadastrarRegistro);
-            BuilderSetup.SetCreatePersistenceMethod<Questoes>(repositorioQuestoes.CadastrarRegistro);
+            BuilderSetup.SetCreatePersistenceMethod<GeneroFilme>(repositorioGenero.Cadastrar);
+            BuilderSetup.SetCreatePersistenceMethod<Filme>(repositorioFilme.Cadastrar);
+            BuilderSetup.SetCreatePersistenceMethod<Sessao>(repositorioSessao.Cadastrar);
+            BuilderSetup.SetCreatePersistenceMethod<Sala>(repositorioSala.Cadastrar);
         }
 
 
-        public static void ConfigurarTabelas(duobingoDbContext dbContext)
+        public static void ConfigurarTabelas(ControleDeCinemaDbContext dbContext)
         {
             dbContext.Database.EnsureCreated();
-
-            dbContext.Questoes.RemoveRange(dbContext.Questoes);
-            dbContext.Materias.RemoveRange(dbContext.Materias);
-            dbContext.Disciplinas.RemoveRange(dbContext.Disciplinas);
-
+            dbContext.Filmes.RemoveRange(dbContext.Filmes);
+            dbContext.GenerosFilme.RemoveRange(dbContext.GenerosFilme);
+            dbContext.Sessoes.RemoveRange(dbContext.Sessoes);
+            dbContext.Salas.RemoveRange(dbContext.Salas);
+            dbContext.Ingressos.RemoveRange(dbContext.Ingressos);
             dbContext.SaveChanges();
         }
 
