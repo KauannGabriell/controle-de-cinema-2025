@@ -10,17 +10,16 @@ using ControleDeCinema.Infraestrutura.Orm.ModuloGeneroFilme;
 using ControleDeCinema.Infraestrutura.Orm.ModuloSala;
 using ControleDeCinema.Infraestrutura.Orm.ModuloSessao;
 using FizzWare.NBuilder;
-using System.ComponentModel;
 using Testcontainers.MsSql;
 
-namespace Duobingo.Testes.Integracao.Compartilhado
+namespace ControleDeCinema.Testes.Integracao.Compartilhado
 {
 
     [TestClass]
     public abstract class TestFixture
     {
-        protected ControleDeCinemaDbContext dbContext;
-        protected RepositorioGeneroFilmeEmOrm repositorioGenero;
+        public ControleDeCinemaDbContext dbContext;
+         protected RepositorioGeneroFilmeEmOrm repositorioGenero;
         protected RepositorioIngressoEmOrm repositorioIngresso;
         protected RepositorioFilmeEmOrm repositorioFilme;
         protected RepositorioSessaoEmOrm repositorioSessao;
@@ -38,8 +37,10 @@ namespace Duobingo.Testes.Integracao.Compartilhado
         }
         private static async Task EncerrarBancoDadosAsync()
         {
-            await EncerrarBancoDadosAsync();
+            if (container is not null)
+                await container.StopAsync();
         }
+
 
         [AssemblyInitialize]
         public static async Task Setup(TestContext _)
@@ -69,6 +70,12 @@ namespace Duobingo.Testes.Integracao.Compartilhado
             dbContext = ControleDeCinemaDbContextFactory.CriarDbContext(container.GetConnectionString());
             ConfigurarTabelas(dbContext);
 
+            repositorioGenero = new RepositorioGeneroFilmeEmOrm(dbContext);
+            repositorioIngresso = new RepositorioIngressoEmOrm(dbContext);
+            repositorioFilme = new RepositorioFilmeEmOrm(dbContext);
+            repositorioSessao = new RepositorioSessaoEmOrm(dbContext);
+            repositorioSala = new RepositorioSalaEmOrm(dbContext);
+
 
             BuilderSetup.SetCreatePersistenceMethod<GeneroFilme>(repositorioGenero.Cadastrar);
             BuilderSetup.SetCreatePersistenceMethod<Filme>(repositorioFilme.Cadastrar);
@@ -79,6 +86,9 @@ namespace Duobingo.Testes.Integracao.Compartilhado
 
         public static void ConfigurarTabelas(ControleDeCinemaDbContext dbContext)
         {
+        ;
+
+
             dbContext.Database.EnsureCreated();
             dbContext.Filmes.RemoveRange(dbContext.Filmes);
             dbContext.GenerosFilme.RemoveRange(dbContext.GenerosFilme);
