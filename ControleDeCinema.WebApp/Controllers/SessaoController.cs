@@ -50,7 +50,11 @@ public class SessaoController : Controller
             if (ingressosResult.IsFailed)
                 return this.RedirecionarParaNotificacaoHome(ingressosResult.ToResult());
 
-            ViewData["Ingressos"] = ingressosResult.Value;
+            var ingressosVm = ingressosResult.Value
+                .Select(DetalhesIngressoViewModel.ParaDetalhesVm)
+                .ToList();
+
+            ViewData["Ingressos"] = ingressosVm;
         }
 
         return View(sessoesVm);
