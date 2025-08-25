@@ -32,6 +32,36 @@ namespace ControleDeCinema.Testes.Integracao.ModuloGeneroFilme
 
 
         [TestMethod]
+        public void Deve_CadastrarVarios_GeneroFilme_Corretamente()
+        {
+
+            // Arrange
+            var genero = new GeneroFilme("Ação");
+            var genero2 = new GeneroFilme("Romance");
+            var genero3 = new GeneroFilme("Terror");
+
+            List<GeneroFilme> generosEsperados = [genero, genero2, genero3];
+            var generosEsperadosOrdenados = generosEsperados
+                .OrderBy(d => d.Descricao)
+                .ToList();
+
+            //Act
+            repositorioGenero.CadastrarEntidades(new List<GeneroFilme> { genero, genero2, genero3 });
+            dbContext.SaveChanges();
+
+            var generosRecebidos = repositorioGenero.SelecionarRegistros();
+
+            var generosRecebidosOrdenados = generosRecebidos
+               .OrderBy(d => d.Descricao)
+               .ToList();
+
+            // Assert   
+
+            CollectionAssert.AreEqual(generosEsperadosOrdenados, generosRecebidosOrdenados);
+        }
+
+
+        [TestMethod]
         public void Deve_Selecionar_Generos_Corretamente()
         {
             // Padrão AAA
@@ -92,7 +122,7 @@ namespace ControleDeCinema.Testes.Integracao.ModuloGeneroFilme
 
 
         [TestMethod]
-        public void Deve_Excluir_Registro_Corretamente()
+        public void Deve_Excluir_Genero_Corretamente()
         {
 
             // Arrange
