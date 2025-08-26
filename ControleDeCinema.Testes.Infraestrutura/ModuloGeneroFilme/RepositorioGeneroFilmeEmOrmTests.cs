@@ -64,9 +64,8 @@ namespace ControleDeCinema.Testes.Integracao.ModuloGeneroFilme
         [TestMethod]
         public void Deve_Selecionar_Generos_Corretamente()
         {
-            // Padrão AAA
 
-            // Arrange  - Arranjo
+            // Arrange  
             var genero = new GeneroFilme("Ação");
             var genero2 = new GeneroFilme("Romance");
             var genero3 = new GeneroFilme("Terror");
@@ -84,14 +83,14 @@ namespace ControleDeCinema.Testes.Integracao.ModuloGeneroFilme
                 .OrderBy(d => d.Descricao)
                 .ToList();
 
-            // Act - Ação
+            // Act 
             var generosRecebidos = repositorioGenero.SelecionarRegistros();
 
             var generosRecebidosOrdenados = generosRecebidos
                 .OrderBy(d => d.Descricao)
                 .ToList();
 
-            // Assert - Verificação
+            // Assert 
             CollectionAssert.AreEqual(generosEsperadosOrdenados, generosRecebidosOrdenados);
         }
 
