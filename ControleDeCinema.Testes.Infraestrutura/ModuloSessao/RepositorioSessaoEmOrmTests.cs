@@ -47,6 +47,7 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSessao
             //Act
             repositorioSessao.Cadastrar(sessao);
             dbContext.SaveChanges();
+
             // Assert   
             var registroSelecionado = repositorioSessao.SelecionarRegistroPorId(sessao.Id);
 
