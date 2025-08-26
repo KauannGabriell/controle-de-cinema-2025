@@ -47,7 +47,6 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSessao
             //Act
             repositorioSessao.Cadastrar(sessao);
             dbContext.SaveChanges();
-
             // Assert   
             var registroSelecionado = repositorioSessao.SelecionarRegistroPorId(sessao.Id);
 
@@ -133,9 +132,8 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSessao
             var sessao2 = new Sessao(DateTime.Now.AddHours(3), 50, filme, sala);
             var sessao3 = new Sessao(DateTime.Now.AddHours(5), 50, filme, sala);
 
-            repositorioSessao.Cadastrar(sessao);
-            repositorioSessao.Cadastrar(sessao2);
-            repositorioSessao.Cadastrar(sessao3);
+            repositorioSessao.CadastrarEntidades([sessao, sessao2, sessao3]);
+           
 
 
             dbContext.SaveChanges();
