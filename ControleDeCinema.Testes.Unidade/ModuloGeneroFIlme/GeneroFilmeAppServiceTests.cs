@@ -87,6 +87,37 @@ public sealed class GeneroFilmeAppServiceTests
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsFailed);
     }
+
+   
+
+    [TestMethod]
+    public void Cadastrar_DeveRetornarFalha_QuandoExcecaoForLancada()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Comédia");
+
+        repositorioGeneroFilmeMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<GeneroFilme>());
+
+        unitOfWorkMock?
+            .Setup(r => r.Commit())
+            .Throws(new Exception("Erro Esperado"));
+
+        // Act
+        var resultado = generoFilmeAppService?.Cadastrar(generoFilme);
+
+        // Assert
+        unitOfWorkMock?.Verify(u => u.Rollback(), Times.Once);
+
+        Assert.IsNotNull(resultado);
+
+        var mensagemErro = resultado.Errors.First().Message;
+
+        Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
+
+        Assert.IsTrue(resultado.IsFailed);
+    }
 }
 
 
