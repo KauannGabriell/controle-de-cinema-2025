@@ -44,10 +44,10 @@ public sealed class SessaoAppServiceTests
     public void Cadastrar_DeveRetornarOk_QuandoSessaoForValida()
     {
         // Arrange
-        DateTime dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
-        GeneroFilme generoFilme = new GeneroFilme("Ação");
-        Filme filme = new Filme("Titanic", 120, false, generoFilme);
-        Sala sala = new Sala(1, 100);
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
         var sessao = new Sessao(dateTime, 30, filme, sala);
         var sessaoTeste = new Sessao(dateTime.AddHours(4), 20, filme, sala);
 
@@ -71,10 +71,10 @@ public sealed class SessaoAppServiceTests
     public void Cadastrar_DeveRetornarFalaha_QuandoNumeroMaximoDeIngressosForMaiorQueASala()
     {
         // Arrange
-        DateTime dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
-        GeneroFilme generoFilme = new GeneroFilme("Ação");
-        Filme filme = new Filme("Titanic", 120, false, generoFilme);
-        Sala sala = new Sala(1, 100);
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
 
         var sessao = new Sessao(dateTime, 110, filme, sala);
         var sessaoTeste = new Sessao(dateTime.AddHours(2), 120, filme, sala);
@@ -98,10 +98,10 @@ public sealed class SessaoAppServiceTests
     public void Cadastrar_DeveRetornarFalha_QuandoSessaoForDuplicada()
     {
         // Arrange
-        DateTime dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
-        GeneroFilme generoFilme = new GeneroFilme("Ação");
-        Filme filme = new Filme("Titanic", 120, false, generoFilme);
-        Sala sala = new Sala(1, 100);
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
 
         var sessao = new Sessao(dateTime, 60, filme, sala);
         var sessaoTeste = new Sessao(dateTime, 60, filme, sala);
@@ -127,10 +127,10 @@ public sealed class SessaoAppServiceTests
     {
         // Arrange
 
-        DateTime dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
-        GeneroFilme generoFilme = new GeneroFilme("Ação");
-        Filme filme = new Filme("Titanic", 120, false, generoFilme);
-        Sala sala = new Sala(1, 100);
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
 
         var sessao = new Sessao(dateTime, 90, filme, sala);
         var sessaoTeste = new Sessao(dateTime.AddHours(2), 80, filme, sala);
@@ -164,10 +164,10 @@ public sealed class SessaoAppServiceTests
     public void Editar_DeveRetornarOk_QuandoSessaoForValida()
     {
         // Arrange
-        DateTime dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
-        GeneroFilme generoFilme = new GeneroFilme("Ação");
-        Filme filme = new Filme("Titanic", 120, false, generoFilme);
-        Sala sala = new Sala(1, 100);
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
 
         var sessao = new Sessao(dateTime, 90, filme, sala);
         var sessaoTeste = new Sessao(dateTime.AddHours(2), 30, filme, sala);
@@ -196,16 +196,13 @@ public sealed class SessaoAppServiceTests
     public void Editar_DeveRetornarFalha_QuandoSessaoForDuplicada()
     {
         // Arrange
-        DateTime dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
-        GeneroFilme generoFilme = new GeneroFilme("Ação");
-        Filme filme = new Filme("Titanic", 120, false, generoFilme);
-        Sala sala = new Sala(1, 100);
-
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
 
         var sessao = new Sessao(dateTime.AddHours(5), 90, filme, sala);
-
         var sessaoTeste = new Sessao(dateTime, 90, filme, sala);
-
         var sessaoEditada = new Sessao(dateTime, 90, filme, sala);
 
         repositorioSessaoMock?
@@ -221,6 +218,48 @@ public sealed class SessaoAppServiceTests
         unitOfWorkMock?.Verify(u => u.Commit(), Times.Never);
 
         Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsFailed);
+    }
+
+    [TestMethod]
+    public void Editar_DeveRetornarFalha_QuandoExcecaoForLancada()
+    {
+
+            // Arrange
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
+
+        var sessao = new Sessao(dateTime.AddHours(5), 90, filme, sala);
+        var sessaoTeste = new Sessao(dateTime, 90, filme, sala);
+        var sessaoEditada = new Sessao(dateTime.AddHours(5), 92, filme, sala);
+
+        repositorioSessaoMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Sessao>() { sessaoTeste });
+
+        repositorioSessaoMock?
+            .Setup(r => r.Editar(sessao.Id, sessaoEditada))
+            .Returns(true);
+
+        unitOfWorkMock?
+            .Setup(r => r.Commit())
+            .Throws(new Exception("Erro Esperado"));
+
+
+        // Act
+        var resultado = sessaoAppService?.Editar(sessao.Id, sessaoEditada);
+
+        // Assert
+        unitOfWorkMock?.Verify(u => u.Rollback(), Times.Once);
+        repositorioSessaoMock?.Verify(r => r.Editar(sessao.Id, sessaoEditada), Times.Once);
+
+        Assert.IsNotNull(resultado);
+
+        var mensagemErro = resultado.Errors.First().Message;
+
+        Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
         Assert.IsTrue(resultado.IsFailed);
     }
 }
