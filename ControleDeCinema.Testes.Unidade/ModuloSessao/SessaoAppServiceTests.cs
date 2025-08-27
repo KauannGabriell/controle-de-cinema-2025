@@ -10,6 +10,7 @@ using ControleDeCinema.Dominio.ModuloGeneroFilme;
 using ControleDeCinema.Aplicacao.ModuloSessao;
 using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Dominio.ModuloSala;
+using FluentResults;
 
 namespace ControleDeCinema.Testes.Unidade.ModuloSessao;
 
@@ -422,6 +423,66 @@ public sealed class SessaoAppServiceTests
         var erro = resultado.Errors.First();
 
         Assert.AreEqual("Registro não encontrado", erro.Message);
+    }
+
+    [TestMethod]
+    public void SelecionarTodos_DeveRetornarOk_QuandoForUmClienteRequisitando()
+    {
+        // Arrange
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
+
+        var sessao = new Sessao(dateTime.AddHours(5), 90, filme, sala);
+        var sessaoTeste = new Sessao(dateTime, 90, filme, sala);
+
+        repositorioSessaoMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Sessao> { sessaoTeste });
+       
+        tenantProviderMock?
+            .Setup(t => t.IsInRole("Cliente"))
+            .Returns(true);
+            
+        //Act
+        var resultado = sessaoAppService?.SelecionarTodos();
+
+
+        //Assert
+        repositorioSessaoMock?.Verify(r => r.SelecionarRegistros(), Times.Once);
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
+
+    [TestMethod]
+    public void SelecionarTodos_DeveRetornarOk_QuandoForUmaEmpresaRequisitando()
+    {
+        // Arrange
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
+
+        var sessao = new Sessao(dateTime.AddHours(5), 90, filme, sala);
+        var sessaoTeste = new Sessao(dateTime, 90, filme, sala);
+        var idUsuario = new Guid();
+        repositorioSessaoMock?
+            .Setup(r => r.SelecionarRegistrosDoUsuario(idUsuario))
+            .Returns(new List<Sessao> { sessaoTeste });
+
+        tenantProviderMock?
+            .Setup(t => t.IsInRole("Empresa"))
+            .Returns(true);
+
+        //Act
+        var resultado = sessaoAppService?.SelecionarTodos();
+
+
+        //Assert
+        repositorioSessaoMock?.Verify(r => r.SelecionarRegistrosDoUsuario(idUsuario), Times.Once);
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
     }
 }
 

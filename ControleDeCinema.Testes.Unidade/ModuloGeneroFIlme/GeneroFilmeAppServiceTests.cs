@@ -9,7 +9,7 @@ using Moq;
 namespace ControleDeCinema.Testes.Unidade.ModuloGeneroFilme;
 
 [TestClass]
-[TestCategory("Teste de unidade de da camada de aplicação do modulo genero filme")]
+[TestCategory("Testes de unidade de genero filme")]
 
 public sealed class GeneroFilmeAppServiceTests
 {
