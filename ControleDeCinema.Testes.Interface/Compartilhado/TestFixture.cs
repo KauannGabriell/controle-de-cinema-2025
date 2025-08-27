@@ -4,11 +4,21 @@ using OpenQA.Selenium.Chrome;
 namespace ControleDeCinema.Testes.Interface.Compartilhado;
 
 [TestClass]
-public sealed class TestFixture
+public abstract class TestFixture
 {
       protected static IWebDriver? driver;
-    
 
+    [TestInitialize]
+    public void ConfigurarTestes()
+    {
+        InicializarWebDriver();
+    }
+
+    [TestCleanup]
+    public void EncerrarTestes()
+        {
+        EncerrarWebDriver();
+    }
 
     private static void InicializarWebDriver()
     {

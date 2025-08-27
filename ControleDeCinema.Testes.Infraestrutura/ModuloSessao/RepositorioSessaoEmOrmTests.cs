@@ -38,7 +38,7 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSessao
                 .With(s => s.Capacidade = 100)
                 .Persist();
 
-            DateTime dataInicio = DateTime.Now.AddHours(1);
+            DateTime dataInicio = DateTime.UtcNow.AddHours(1);
 
             var sessao = new Sessao(dataInicio, 50, filme, sala);
 
@@ -78,9 +78,9 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSessao
                 .With(s => s.Capacidade = 100)
                 .Persist();
 
-            var sessao = new Sessao(DateTime.Now.AddHours(1), 50, filme, sala);
-            var sessao2 = new Sessao(DateTime.Now.AddHours(3), 50, filme, sala);
-            var sessao3 = new Sessao(DateTime.Now.AddHours(5), 50, filme, sala);
+            var sessao = new Sessao(DateTime.UtcNow.AddHours(1), 50, filme, sala);
+            var sessao2 = new Sessao(DateTime.UtcNow.AddHours(3), 50, filme, sala);
+            var sessao3 = new Sessao(DateTime.UtcNow.AddHours(5), 50, filme, sala);
 
 
             List<Sessao> sessoesEsperadas = [sessao, sessao2, sessao3];
@@ -127,11 +127,9 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSessao
                 .With(s => s.Numero = 1)
                 .With(s => s.Capacidade = 100)
                 .Persist();
-
-            var sessao = new Sessao(DateTime.Now.AddHours(1), 50, filme, sala);
-            var sessao2 = new Sessao(DateTime.Now.AddHours(3), 50, filme, sala);
-            var sessao3 = new Sessao(DateTime.Now.AddHours(5), 50, filme, sala);
-
+            var sessao = new Sessao(DateTime.UtcNow.AddHours(1), 50, filme, sala);
+            var sessao2 = new Sessao(DateTime.UtcNow.AddHours(3), 50, filme, sala);
+            var sessao3 = new Sessao(DateTime.UtcNow.AddHours(5), 50, filme, sala);
             repositorioSessao.CadastrarEntidades([sessao, sessao2, sessao3]);
            
 
@@ -187,11 +185,11 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSessao
                     .With(s => s.Capacidade = 100)
                     .Persist();
 
-            var sessao = new Sessao(DateTime.Now.AddHours(1), 50, filme, sala);
+            var sessao = new Sessao(DateTime.UtcNow.AddHours(1), 50, filme, sala);
             repositorioSessao.Cadastrar(sessao);
             dbContext.SaveChanges();
 
-            var sessaoEditada = new Sessao(DateTime.Now.AddHours(1), 50, filmeEditado, sala);
+            var sessaoEditada = new Sessao(DateTime.UtcNow.AddHours(1), 50, filmeEditado, sala);
 
             //Act
 
@@ -232,7 +230,7 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSessao
                 .With(s => s.Capacidade = 100)
                 .Persist();
 
-            var sessao = new Sessao(DateTime.Now.AddHours(1), 50, filme, sala);
+            var sessao = new Sessao(DateTime.UtcNow.AddHours(1), 50, filme, sala);
             repositorioSessao.Cadastrar(sessao);
             dbContext.SaveChanges();
 

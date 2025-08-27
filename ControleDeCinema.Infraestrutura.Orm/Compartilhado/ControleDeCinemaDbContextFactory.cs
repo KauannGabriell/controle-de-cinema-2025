@@ -7,7 +7,7 @@ public static class ControleDeCinemaDbContextFactory
     public static ControleDeCinemaDbContext CriarDbContext(string connectionString)
     {
         var options = new DbContextOptionsBuilder<ControleDeCinemaDbContext>()
-            .UseSqlServer(connectionString)
+            .UseNpgsql(connectionString)
             .Options;
 
         var dbContext = new ControleDeCinemaDbContext(options);
