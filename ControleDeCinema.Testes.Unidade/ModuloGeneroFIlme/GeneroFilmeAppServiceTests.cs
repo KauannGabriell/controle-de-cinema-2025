@@ -2,7 +2,6 @@
 using ControledeCinema.Dominio.Compartilhado;
 using ControleDeCinema.Aplicacao.ModuloGeneroFilme;
 using ControleDeCinema.Dominio.ModuloAutenticacao;
-using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Dominio.ModuloGeneroFilme;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -44,7 +43,6 @@ public sealed class GeneroFilmeAppServiceTests
     public void Cadastrar_DeveRetornarOk_QuandoGeneroFilmeForValido()
     {
         // Arrange
-
         var generoFilme = new GeneroFilme("Ação");
         var generoFilmeTeste = new GeneroFilme("Teste");
 
@@ -52,7 +50,6 @@ public sealed class GeneroFilmeAppServiceTests
             .Setup(r => r.SelecionarRegistros())
             .Returns(new List<GeneroFilme>() { generoFilmeTeste });
         //Act
-
         var resultado = generoFilmeAppService?.Cadastrar(generoFilme);
 
         //Assert
@@ -69,7 +66,6 @@ public sealed class GeneroFilmeAppServiceTests
     {
         // Arrange
         var generoFilme = new GeneroFilme("Ação");
-
         var generoFilmeTeste = new GeneroFilme("Ação");
 
         repositorioGeneroFilmeMock?
@@ -116,7 +112,6 @@ public sealed class GeneroFilmeAppServiceTests
         var mensagemErro = resultado.Errors.First().Message;
 
         Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
-
         Assert.IsTrue(resultado.IsFailed);
     }
 
@@ -139,7 +134,6 @@ public sealed class GeneroFilmeAppServiceTests
         //Assert
         repositorioGeneroFilmeMock?.Verify(r => r.Editar(generoFilme.Id, generoFilmeEditado), Times.Once);
         unitOfWorkMock?.Verify(u => u.Commit(), Times.Once);
-
         
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsSuccess);
@@ -198,9 +192,7 @@ public sealed class GeneroFilmeAppServiceTests
         var mensagemErro = resultado.Errors.First().Message;
 
         Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
-
         Assert.IsTrue(resultado.IsFailed);
-
     }
 
     [TestMethod]
@@ -244,7 +236,6 @@ public sealed class GeneroFilmeAppServiceTests
         var mensagemErro = resultado.Errors.First().Message;
 
         Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
-
         Assert.IsTrue(resultado.IsFailed);
     }
 
@@ -260,13 +251,10 @@ public sealed class GeneroFilmeAppServiceTests
             .Returns(generoFilmeTeste);
 
         //Act
-
         var resultado = generoFilmeAppService?.SelecionarPorId(generoFilme.Id);
 
         //Assert
         repositorioGeneroFilmeMock?.Verify(r => r.SelecionarRegistroPorId(generoFilme.Id), Times.Once);
-        
-
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsSuccess);
     }
@@ -293,7 +281,6 @@ public sealed class GeneroFilmeAppServiceTests
         var erro = resultado.Errors.First();
 
         Assert.AreEqual("Registro não encontrado", erro.Message);
-      
     }
 
     [TestMethod]
@@ -318,11 +305,9 @@ public sealed class GeneroFilmeAppServiceTests
         repositorioGeneroFilmeMock?.Verify(r => r.SelecionarRegistroPorId(generoFilme.Id), Times.Once);
 
         Assert.IsNotNull(resultado);
-
         var mensagemErro = resultado.Errors.First().Message;
 
         Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
-
         Assert.IsTrue(resultado.IsFailed);
     }
 
@@ -338,7 +323,6 @@ public sealed class GeneroFilmeAppServiceTests
             .Returns(new List<GeneroFilme> { generoFilme});
 
         //Act
-
         var resultado = generoFilmeAppService?.SelecionarTodos();
 
         //Assert
@@ -376,9 +360,6 @@ public sealed class GeneroFilmeAppServiceTests
 
         Assert.IsTrue(resultado.IsFailed);
     }
-
-
-
 }
 
 
