@@ -192,5 +192,36 @@ public sealed class SessaoAppServiceTests
         Assert.IsTrue(resultado.IsSuccess);
     }
 
+    [TestMethod]
+    public void Editar_DeveRetornarFalha_QuandoSessaoForDuplicada()
+    {
+        // Arrange
+        DateTime dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        GeneroFilme generoFilme = new GeneroFilme("Ação");
+        Filme filme = new Filme("Titanic", 120, false, generoFilme);
+        Sala sala = new Sala(1, 100);
+
+
+        var sessao = new Sessao(dateTime.AddHours(5), 90, filme, sala);
+
+        var sessaoTeste = new Sessao(dateTime, 90, filme, sala);
+
+        var sessaoEditada = new Sessao(dateTime, 90, filme, sala);
+
+        repositorioSessaoMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Sessao>() { sessaoTeste});
+
+        // Act
+        var resultado = sessaoAppService?.Editar(sessao.Id, sessaoEditada);
+
+        // Assert
+        repositorioSessaoMock?.Verify(r => r.Editar(sessao.Id, sessaoEditada), Times.Never);
+
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Never);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsFailed);
+    }
 }
 
