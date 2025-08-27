@@ -193,6 +193,33 @@ public sealed class SessaoAppServiceTests
     }
 
     [TestMethod]
+    public void Editar_DeveRetornarFalaha_QuandoNumeroMaximoDeIngressosForMaiorQueASala()
+    {
+        // Arrange
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
+
+        var sessao = new Sessao(dateTime, 110, filme, sala);
+        var sessaoTeste = new Sessao(dateTime.AddHours(2), 100, filme, sala);
+        var sessaoEditada = new Sessao(dateTime.AddHours(4), 120, filme, sala);
+
+        repositorioSessaoMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Sessao>() { sessaoTeste });
+        //Act
+        var resultado = sessaoAppService?.Cadastrar(sessao);
+
+        //Assert
+        repositorioSessaoMock?.Verify(r => r.Cadastrar(sessao), Times.Never);
+
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Never);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsFailed);
+    }
+    [TestMethod]
     public void Editar_DeveRetornarFalha_QuandoSessaoForDuplicada()
     {
         // Arrange
@@ -264,7 +291,7 @@ public sealed class SessaoAppServiceTests
     }
 
     [TestMethod]
-    public void Excluir_DeveRetornarOk_QuandoIdSessaoForValida()
+    public void Excluir_DeveRetornarOk_QuandoIdSessaoForValido()
     {
         // Arrange
         var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
@@ -294,5 +321,7 @@ public sealed class SessaoAppServiceTests
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsSuccess);
     }
+
+
 }
 
