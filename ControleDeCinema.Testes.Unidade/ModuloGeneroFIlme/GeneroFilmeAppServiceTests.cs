@@ -64,7 +64,29 @@ public sealed class GeneroFilmeAppServiceTests
     }
 
 
+    [TestMethod]
+    public void Cadastrar_DeveRetornarFalha_QuandoGeneroFilmeForDuplicado()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Ação");
 
+        var generoFilmeTeste = new GeneroFilme("Ação");
+
+        repositorioGeneroFilmeMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<GeneroFilme>() { generoFilmeTeste });
+
+        // Act
+        var resultado = generoFilmeAppService?.Cadastrar(generoFilme);
+
+        // Assert
+        repositorioGeneroFilmeMock?.Verify(r => r.Cadastrar(generoFilme), Times.Never);
+
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Never);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsFailed);
+    }
 }
 
 
