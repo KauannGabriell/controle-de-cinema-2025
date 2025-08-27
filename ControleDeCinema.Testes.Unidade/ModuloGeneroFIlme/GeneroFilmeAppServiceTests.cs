@@ -248,6 +248,31 @@ public sealed class GeneroFilmeAppServiceTests
         Assert.IsTrue(resultado.IsFailed);
     }
 
+    [TestMethod]
+    public void SelecionarPorId_DeveRetornarOk_QuandoIdGeneroFilmeForValido()
+    {
+        // Arrange
+
+        var generoFilme = new GeneroFilme("Ação");
+        var generoFilmeTeste = new GeneroFilme("Comedia");
+        repositorioGeneroFilmeMock?
+            .Setup(r => r.SelecionarRegistroPorId(generoFilme.Id))
+            .Returns(generoFilmeTeste);
+
+        //Act
+
+        var resultado = generoFilmeAppService?.SelecionarPorId(generoFilme.Id);
+
+        //Assert
+        repositorioGeneroFilmeMock?.Verify(r => r.SelecionarRegistroPorId(generoFilme.Id), Times.Once);
+        
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
+
+
+
 }
 
 
