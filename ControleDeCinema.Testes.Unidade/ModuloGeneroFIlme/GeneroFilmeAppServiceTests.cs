@@ -271,6 +271,61 @@ public sealed class GeneroFilmeAppServiceTests
         Assert.IsTrue(resultado.IsSuccess);
     }
 
+    [TestMethod]
+    public void SelecionarPorId_DeveRetornarFalha_QuandoGeneroFilmeNaoForEncontrado()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Ação");
+
+        repositorioGeneroFilmeMock?
+            .Setup(r => r.SelecionarRegistroPorId(generoFilme.Id))
+            .Returns((GeneroFilme?)null);
+
+        // Act
+        var resultado = generoFilmeAppService?.SelecionarPorId(generoFilme.Id);
+
+        // Assert
+        repositorioGeneroFilmeMock?.Verify(r => r.SelecionarRegistroPorId(generoFilme.Id), Times.Once);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsFailed);
+
+        var erro = resultado.Errors.First();
+
+        Assert.AreEqual("Registro não encontrado", erro.Message);
+      
+    }
+
+    [TestMethod]
+    public void SelecionarPorId_DeveRetornarFalha_QuandoExcecaoForLancada()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Comédia");
+        var generoFilmeTeste = new GeneroFilme("Comedia");
+        repositorioGeneroFilmeMock?
+            .Setup(r => r.SelecionarRegistroPorId(generoFilme.Id))
+            .Returns(generoFilmeTeste);
+
+
+        repositorioGeneroFilmeMock?
+           .Setup(r => r.SelecionarRegistroPorId(generoFilme.Id))
+          .Throws(new Exception("Erro Esperado"));
+
+        // Act
+        var resultado = generoFilmeAppService?.SelecionarPorId(generoFilme.Id);
+
+        // Assert
+        repositorioGeneroFilmeMock?.Verify(r => r.SelecionarRegistroPorId(generoFilme.Id), Times.Once);
+
+        Assert.IsNotNull(resultado);
+
+        var mensagemErro = resultado.Errors.First().Message;
+
+        Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
+
+        Assert.IsTrue(resultado.IsFailed);
+    }
+
 
 
 }
