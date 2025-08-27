@@ -159,5 +159,38 @@ public sealed class SessaoAppServiceTests
         Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
         Assert.IsTrue(resultado.IsFailed);
     }
+
+    [TestMethod]
+    public void Editar_DeveRetornarOk_QuandoSessaoForValida()
+    {
+        // Arrange
+        DateTime dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        GeneroFilme generoFilme = new GeneroFilme("Ação");
+        Filme filme = new Filme("Titanic", 120, false, generoFilme);
+        Sala sala = new Sala(1, 100);
+
+        var sessao = new Sessao(dateTime, 90, filme, sala);
+        var sessaoTeste = new Sessao(dateTime.AddHours(2), 30, filme, sala);
+        var sessaoEditada = new Sessao(dateTime.AddHours(2), 80, filme, sala);
+
+        repositorioSessaoMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Sessao>() { sessao });
+
+        repositorioSessaoMock?
+        .Setup(r => r.Editar(sessao.Id, sessaoEditada))
+        .Returns(true);
+
+        //Act
+        var resultado = sessaoAppService?.Editar(sessao.Id, sessaoEditada);
+
+        //Assert
+        repositorioSessaoMock?.Verify(r => r.Editar(sessao.Id, sessaoEditada), Times.Once);
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Once);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
+
 }
 
