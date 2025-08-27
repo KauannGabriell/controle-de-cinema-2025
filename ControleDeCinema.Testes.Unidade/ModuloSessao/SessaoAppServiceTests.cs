@@ -11,6 +11,7 @@ using ControleDeCinema.Aplicacao.ModuloSessao;
 using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Dominio.ModuloSala;
 using FluentResults;
+using ControleDeCinema.Testes.Unidade.ModuloGeneroFIlme;
 
 namespace ControleDeCinema.Testes.Unidade.ModuloSessao;
 
@@ -481,6 +482,31 @@ public sealed class SessaoAppServiceTests
 
         //Assert
         repositorioSessaoMock?.Verify(r => r.SelecionarRegistrosDoUsuario(idUsuario), Times.Once);
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
+
+    [TestMethod]
+
+    public void Encerrar_DeveRetornarOk_QuandoSessaoForValida()
+    {
+        // Arrange
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
+
+        var sessao = new Sessao(dateTime.AddHours(5), 90, filme, sala);
+
+        repositorioSessaoMock?
+        .Setup(r => r.SelecionarRegistroPorId(sessao.Id))
+        .Returns(sessao);
+
+        //Act
+        var resultado = sessaoAppService?.Encerrar(sessao.Id);
+
+        //Assert
+        unitOfWorkMock?.Verify(r => r.Commit(), Times.Once);
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsSuccess);
     }
