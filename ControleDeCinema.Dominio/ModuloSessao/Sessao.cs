@@ -64,5 +64,8 @@ public class Sessao : EntidadeBase<Sessao>
     {
         NumeroMaximoIngressos = registroEditado.NumeroMaximoIngressos;
         Inicio = registroEditado.Inicio;
+        Filme = registroEditado.Filme;
+        Sala = registroEditado.Sala;
+        Encerrada = registroEditado.Encerrada;
     }
 }
