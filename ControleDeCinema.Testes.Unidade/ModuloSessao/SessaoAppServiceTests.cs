@@ -533,5 +533,30 @@ public sealed class SessaoAppServiceTests
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsSuccess);
     }
+
+    [TestMethod]
+    public void VenderIngresso_DeveRetornarFalha_QuandoSessaoFoiEncerrada()
+    {
+        // Arrange
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
+
+        var sessao = new Sessao(dateTime.AddHours(5), 90, filme, sala);
+
+        sessao.Encerrar();
+        repositorioSessaoMock?
+        .Setup(r => r.SelecionarRegistroPorId(sessao.Id))
+        .Returns(sessao);
+
+
+        //Act
+        var resultado = sessaoAppService?.VenderIngresso(sessao.Id, 20, true);
+
+        //Assert
+        unitOfWorkMock?.Verify(r => r.Commit(), Times.Never);
+        Assert.IsTrue(resultado.IsFailed);
+    }
 }
 
