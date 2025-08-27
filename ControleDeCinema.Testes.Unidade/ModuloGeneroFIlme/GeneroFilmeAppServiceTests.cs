@@ -106,9 +106,12 @@ public sealed class GeneroFilmeAppServiceTests
         var resultado = generoFilmeAppService?.Cadastrar(generoFilme);
 
         // Assert
+        repositorioGeneroFilmeMock?.Verify(r => r.Cadastrar(generoFilme), Times.Once);
+
         unitOfWorkMock?.Verify(u => u.Rollback(), Times.Once);
 
         Assert.IsNotNull(resultado);
+        
 
         var mensagemErro = resultado.Errors.First().Message;
 
@@ -156,15 +159,48 @@ public sealed class GeneroFilmeAppServiceTests
             .Returns(new List<GeneroFilme>() { generoFilmeTeste });
 
         // Act
-        var resultado = generoFilmeAppService?.Editar(generoFilme.Id, generoFilme);
+        var resultado = generoFilmeAppService?.Editar(generoFilme.Id, generoFilmeEditado);
 
         // Assert
-        repositorioGeneroFilmeMock?.Verify(r => r.Editar(generoFilme.Id, generoFilme), Times.Never);
+        repositorioGeneroFilmeMock?.Verify(r => r.Editar(generoFilme.Id, generoFilmeEditado), Times.Never);
 
         unitOfWorkMock?.Verify(u => u.Commit(), Times.Never);
 
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsFailed);
+    }
+
+    [TestMethod]
+    public void Editar_DeveRetornarFalha_QuandoExcecaoForLancada()
+    {
+
+        // Arrange
+        var generoFilme = new GeneroFilme("Comédia");
+        var generoFilmeEditado = new GeneroFilme("Romance");
+
+        repositorioGeneroFilmeMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<GeneroFilme>());
+
+        unitOfWorkMock?
+            .Setup(r => r.Commit())
+            .Throws(new Exception("Erro Esperado"));
+
+        // Act
+        var resultado = generoFilmeAppService?.Editar(generoFilme.Id, generoFilmeEditado);
+
+        // Assert
+        unitOfWorkMock?.Verify(u => u.Rollback(), Times.Once);
+        repositorioGeneroFilmeMock?.Verify(r => r.Editar(generoFilme.Id, generoFilmeEditado), Times.Once);
+
+        Assert.IsNotNull(resultado);
+
+        var mensagemErro = resultado.Errors.First().Message;
+
+        Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
+
+        Assert.IsTrue(resultado.IsFailed);
+
     }
 }
 
