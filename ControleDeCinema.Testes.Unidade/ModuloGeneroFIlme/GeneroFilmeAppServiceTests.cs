@@ -202,6 +202,25 @@ public sealed class GeneroFilmeAppServiceTests
         Assert.IsTrue(resultado.IsFailed);
 
     }
+
+    [TestMethod]
+    public void Excluir_DeveRetornarOk_QuandoIdGeneroFilmeForValido()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Ação");
+      
+        //Act
+        var resultado = generoFilmeAppService?.Excluir(generoFilme.Id);
+
+        //Assert
+        repositorioGeneroFilmeMock?.Verify(r => r.Excluir(generoFilme.Id), Times.Once);
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Once);
+
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
+
 }
 
 
