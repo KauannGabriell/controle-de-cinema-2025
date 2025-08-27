@@ -262,5 +262,37 @@ public sealed class SessaoAppServiceTests
         Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
         Assert.IsTrue(resultado.IsFailed);
     }
+
+    [TestMethod]
+    public void Excluir_DeveRetornarOk_QuandoIdSessaoForValida()
+    {
+        // Arrange
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
+
+        var sessao = new Sessao(dateTime.AddHours(5), 90, filme, sala);
+        var sessaoTeste = new Sessao(dateTime, 90, filme, sala);
+
+        repositorioSessaoMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Sessao>() { sessaoTeste });
+
+        repositorioSessaoMock?
+           .Setup(r => r.Excluir(sessao.Id))
+           .Returns(true);
+
+        //Act
+        var resultado = sessaoAppService?.Excluir(sessao.Id);
+
+        //Assert
+        repositorioSessaoMock?.Verify(r => r.Excluir(sessao.Id), Times.Once);
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Once);
+
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
 }
 
