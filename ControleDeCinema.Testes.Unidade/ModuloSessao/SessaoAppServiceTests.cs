@@ -12,6 +12,7 @@ using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Dominio.ModuloSala;
 using FluentResults;
 using ControleDeCinema.Testes.Unidade.ModuloGeneroFIlme;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ControleDeCinema.Testes.Unidade.ModuloSessao;
 
@@ -23,6 +24,7 @@ public sealed class SessaoAppServiceTests
     private Mock<IUnitOfWork>? unitOfWorkMock;
     private Mock<ITenantProvider>? tenantProviderMock;
     private Mock<ILogger<SessaoAppService>>? loggerMock;
+    private Mock<Sessao>? sessaoMock;
     private SessaoAppService? sessaoAppService;
 
   
@@ -33,6 +35,7 @@ public sealed class SessaoAppServiceTests
         unitOfWorkMock = new Mock<IUnitOfWork>();
         tenantProviderMock = new Mock<ITenantProvider>();
         loggerMock = new Mock<ILogger<SessaoAppService>>();
+        sessaoMock = new Mock<Sessao>();
 
         sessaoAppService = new SessaoAppService(
             tenantProviderMock.Object,
@@ -583,5 +586,30 @@ public sealed class SessaoAppServiceTests
         Assert.IsTrue(resultado.IsFailed);
     }
 
+    [TestMethod]
+    public void VenderIngresso_DeveRetornarFalha_QuandoAcentoEstaOCupado()
+    {
+        // Arrange
+        var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var sala = new Sala(1, 100);
+
+        var sessao = new Sessao(dateTime.AddHours(5), 90, filme, sala);
+        
+        var ingressoOcupado = sessao.GerarIngresso(20, false);
+
+        repositorioSessaoMock?
+            .Setup(r => r.SelecionarRegistroPorId(sessao.Id))
+            .Returns(sessao);
+
+        // Act
+        var resultado = sessaoAppService?.VenderIngresso(sessao.Id, 20, true);
+
+        // Assert
+        unitOfWorkMock?.Verify(r => r.Commit(), Times.Never);
+        Assert.IsTrue(resultado?.IsFailed);
+        Assert.AreEqual("Este assento já está ocupado.", resultado?.Errors.First().Message);
+    }
 }
 
