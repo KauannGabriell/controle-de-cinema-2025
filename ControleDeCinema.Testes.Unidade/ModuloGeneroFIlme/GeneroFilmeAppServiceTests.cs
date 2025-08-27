@@ -148,18 +148,18 @@ public sealed class GeneroFilmeAppServiceTests
     {
         // Arrange
         var generoFilme = new GeneroFilme("Ação");
-
         var generoFilmeTeste = new GeneroFilme("Ação");
+        var generoFilmeEditado = new GeneroFilme("Ação");
 
         repositorioGeneroFilmeMock?
             .Setup(r => r.SelecionarRegistros())
             .Returns(new List<GeneroFilme>() { generoFilmeTeste });
 
         // Act
-        var resultado = generoFilmeAppService?.Cadastrar(generoFilme);
+        var resultado = generoFilmeAppService?.Editar(generoFilme.Id, generoFilme);
 
         // Assert
-        repositorioGeneroFilmeMock?.Verify(r => r.Cadastrar(generoFilme), Times.Never);
+        repositorioGeneroFilmeMock?.Verify(r => r.Editar(generoFilme.Id, generoFilme), Times.Never);
 
         unitOfWorkMock?.Verify(u => u.Commit(), Times.Never);
 
