@@ -1,7 +1,5 @@
 ﻿using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Dominio.ModuloGeneroFilme;
-using ControleDeCinema.Dominio.ModuloSala;
-using ControleDeCinema.Dominio.ModuloSessao;
 using ControleDeCinema.Testes.Integracao.Compartilhado;
 using FizzWare.NBuilder;
 using Microsoft.EntityFrameworkCore;
@@ -152,7 +150,7 @@ namespace ControleDeCinema.Testes.Infraestrutura.ModuloFilme
 
 
         [TestMethod]
-        public void Deve_Excluir_Genero_Corretamente()
+        public void Deve_Excluir_Filme_Corretamente()
         {
 
             // Arrange
