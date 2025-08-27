@@ -347,6 +347,36 @@ public sealed class GeneroFilmeAppServiceTests
         Assert.IsTrue(resultado.IsSuccess);
     }
 
+    [TestMethod]
+    public void SelecionarTodos_DeveRetornarFalha_QuandoExcecaoForLancada()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Ação");
+        var generoFilmeTeste = new GeneroFilme("Comedia");
+        repositorioGeneroFilmeMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<GeneroFilme> { generoFilme });
+
+
+        repositorioGeneroFilmeMock?
+          .Setup(r => r.SelecionarRegistros())
+          .Throws(new Exception("Erro Esperado"));
+
+        // Act
+        var resultado = generoFilmeAppService?.SelecionarTodos();
+
+        // Assert
+        repositorioGeneroFilmeMock?.Verify(r => r.SelecionarRegistros(), Times.Once);
+
+        Assert.IsNotNull(resultado);
+
+        var mensagemErro = resultado.Errors.First().Message;
+
+        Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
+
+        Assert.IsTrue(resultado.IsFailed);
+    }
+
 
 
 }
