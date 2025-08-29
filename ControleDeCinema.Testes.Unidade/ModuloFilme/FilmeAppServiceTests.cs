@@ -18,14 +18,14 @@ namespace ControleDeCinema.Testes.Unidade.ModuloFilme;
 [TestCategory("Teste de unidade de da camada de aplicação do modulo filme")]
 public sealed class FilmeAppServiceTests
 {
+
     private Mock<IRepositorioFilme>? repositorioFilmeMock;
     private Mock<IUnitOfWork>? unitOfWorkMock;
-    private Mock<ITenantProvider>? tenantProviderMock;
     private Mock<ILogger<FilmeAppService>>? loggerMock;
-    private Mock<Sessao>? sessaoMock;
-    private SessaoAppService? sessaoAppService;
+    private Mock<ITenantProvider>? tenantProviderMock;
 
     private FilmeAppService? filmeAppService;
+
 
     [TestInitialize]
     public void Setup()
@@ -41,6 +41,30 @@ public sealed class FilmeAppServiceTests
            unitOfWorkMock.Object,
            loggerMock.Object
        );
+    }
+
+
+    [TestMethod]
+    public void Cadastrar_DeveRetornarOk_QuandoFilmeForValido()
+    {
+        // Arrange
+
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var filmeTeste = new Filme("Teste", 70, false, generoFilme);
+
+        repositorioFilmeMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Filme>() { filmeTeste });
+        //Act
+        var resultado = filmeAppService?.Cadastrar(filme);
+
+        //Assert
+        repositorioFilmeMock?.Verify(r => r.Cadastrar(filme), Times.Once);
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Once);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
     }
 
     [TestMethod]
@@ -67,13 +91,12 @@ public sealed class FilmeAppServiceTests
         unitOfWorkMock?.Verify(u => u.Rollback(), Times.Once);
 
         Assert.IsNotNull(resultado);
-
+        Assert.IsTrue(resultado.IsSuccess);
 
         var mensagemErro = resultado.Errors.First().Message;
 
         Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
         Assert.IsTrue(resultado.IsFailed);
     }
-
 }
 
