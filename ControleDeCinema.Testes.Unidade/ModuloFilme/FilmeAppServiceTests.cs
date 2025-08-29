@@ -68,6 +68,30 @@ public sealed class FilmeAppServiceTests
     }
 
     [TestMethod]
+    public void Cadastrar_DeveRetornarFalha_QuandoFilmeForDuplicado()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Ação");
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var filmeTeste = new Filme("Titanic", 120, false, generoFilme);
+
+        repositorioFilmeMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Filme>() { filmeTeste });
+
+        // Act
+        var resultado = filmeAppService?.Cadastrar(filme);
+
+        // Assert
+        repositorioFilmeMock?.Verify(r => r.Cadastrar(filme), Times.Never);
+
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Never);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsFailed);
+    }
+
+    [TestMethod]
     public void Cadastrar_DeveRetornarFalha_QuandoExcecaoForLancada()
     {
         // Arrange
