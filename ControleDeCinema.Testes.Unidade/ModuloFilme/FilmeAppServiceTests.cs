@@ -276,5 +276,31 @@ public sealed class FilmeAppServiceTests
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsSuccess);
     }
+
+    [TestMethod]
+    public void SelecionarPorId_DeveRetornarFalha_QuandoFilmeNaoForEncontrado()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Ação");
+
+        var filme = new Filme("Carros 3", 120, false, generoFilme);
+
+        repositorioFilmeMock?
+            .Setup(r => r.SelecionarRegistroPorId(filme.Id))
+            .Returns((Filme?)null);
+
+        // Act
+        var resultado = filmeAppService?.SelecionarPorId(filme.Id);
+
+        // Assert
+        repositorioFilmeMock?.Verify(r => r.SelecionarRegistroPorId(filme.Id), Times.Once);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsFailed);
+
+        var erro = resultado.Errors.First();
+
+        Assert.AreEqual("Registro não encontrado", erro.Message);
+    }
 }
 
