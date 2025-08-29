@@ -354,5 +354,37 @@ public sealed class FilmeAppServiceTests
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsSuccess);
     }
+
+    [TestMethod]
+    public void SelecionarTodos_DeveRetornarFalha_QuandoExcecaoForLancada()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Ação");
+
+        var filme = new Filme("Carros 3", 120, false, generoFilme);
+        var filmeTeste = new Filme("Titanic", 70, false, generoFilme);
+        repositorioFilmeMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Filme> { filme });
+
+
+        repositorioFilmeMock?
+          .Setup(r => r.SelecionarRegistros())
+          .Throws(new Exception("Erro Esperado"));
+
+        // Act
+        var resultado = filmeAppService?.SelecionarTodos();
+
+        // Assert
+        repositorioFilmeMock?.Verify(r => r.SelecionarRegistros(), Times.Once);
+
+        Assert.IsNotNull(resultado);
+
+        var mensagemErro = resultado.Errors.First().Message;
+
+        Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
+
+        Assert.IsTrue(resultado.IsFailed);
+    }
 }
 
