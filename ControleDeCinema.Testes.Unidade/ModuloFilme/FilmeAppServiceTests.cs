@@ -226,5 +226,55 @@ public sealed class FilmeAppServiceTests
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsSuccess);
     }
+
+    [TestMethod]
+    public void Excluir_DeveRetornarFalha_QuandoExcecaoForLancada()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Terror");
+
+        var filme = new Filme("Carros 3", 120, false, generoFilme);
+
+
+        unitOfWorkMock?
+            .Setup(r => r.Commit())
+            .Throws(new Exception("Erro Esperado"));
+
+        // Act
+        var resultado = filmeAppService?.Excluir(filme.Id);
+
+        // Assert
+        unitOfWorkMock?.Verify(u => u.Rollback(), Times.Once);
+        repositorioFilmeMock?.Verify(r => r.Excluir(filme.Id), Times.Once);
+
+        Assert.IsNotNull(resultado);
+
+        var mensagemErro = resultado.Errors.First().Message;
+
+        Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
+        Assert.IsTrue(resultado.IsFailed);
+    }
+
+    [TestMethod]
+    public void SelecionarPorId_DeveRetornarOk_QuandoIdFilmeForValido()
+    {
+        // Arrange
+
+        var generoFilme = new GeneroFilme("Ação");
+
+        var filme = new Filme("Carros 3", 120, false, generoFilme);
+        var filmeTeste = new Filme("Titanic", 70, false, generoFilme);
+        repositorioFilmeMock?
+            .Setup(r => r.SelecionarRegistroPorId(filme.Id))
+            .Returns(filmeTeste);
+
+        //Act
+        var resultado = filmeAppService?.SelecionarPorId(filme.Id);
+
+        //Assert
+        repositorioFilmeMock?.Verify(r => r.SelecionarRegistroPorId(filme.Id), Times.Once);
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
 }
 
