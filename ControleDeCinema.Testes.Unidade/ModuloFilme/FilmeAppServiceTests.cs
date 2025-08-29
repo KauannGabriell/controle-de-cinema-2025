@@ -147,5 +147,31 @@ public sealed class FilmeAppServiceTests
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsSuccess);
     }
+
+    [TestMethod]
+    public void Editar_DeveRetornarFalha_QuandoFilmeForDuplicado()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Ação");
+
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+        var filmeTeste = new Filme("Titanic", 120, false, generoFilme);
+        var filmeEditado = new Filme("Titanic", 120, false, generoFilme);
+
+        repositorioFilmeMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Filme>() { filmeTeste });
+
+        // Act
+        var resultado = filmeAppService?.Editar(filme.Id, filmeEditado);
+
+        // Assert
+        repositorioFilmeMock?.Verify(r => r.Editar(filme.Id, filmeEditado), Times.Never);
+
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Never);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsFailed);
+    }
 }
 
