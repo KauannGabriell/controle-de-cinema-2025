@@ -152,11 +152,9 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSessao
             // Assert 
             CollectionAssert.AreEqual(sessoesEsperadasOrdenadas, sessoesRecebidasOrdenadas);
         }
-
         [TestMethod]
         public void Deve_Editar_Sessao_Corretamente()
         {
-
             // Arrange
             var generoFilme = Builder<GeneroFilme>
                     .CreateNew()
@@ -169,15 +167,16 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSessao
                     .With(f => f.Duracao = 120)
                     .With(f => f.Lancamento = false)
                     .With(f => f.Genero = generoFilme)
-                    .Persist();
+                    .Persist();   
 
             var filmeEditado = Builder<Filme>
                   .CreateNew()
+                  .With(f => f.Id = new Guid())
                   .With(f => f.Titulo = "Planeta dos Gorilas Albinos")
                   .With(f => f.Duracao = 120)
                   .With(f => f.Lancamento = true)
                   .With(f => f.Genero = generoFilme)
-                  .Build();
+                  .Build();  
 
             var sala = Builder<Sala>
                     .CreateNew()
@@ -189,20 +188,17 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSessao
             repositorioSessao.Cadastrar(sessao);
             dbContext.SaveChanges();
 
-            var sessaoEditada = new Sessao(DateTime.UtcNow.AddHours(1), 50, filmeEditado, sala);
+            var sessaoEditada = new Sessao(sessao.Inicio, 50, filmeEditado, sala);
 
             //Act
-
             var conseguiuEditar = repositorioSessao.Editar(sessao.Id, sessaoEditada);
             dbContext.SaveChanges();
 
-
             //Assert
-
             var registroSelecionado = repositorioSessao.SelecionarRegistroPorId(sessao.Id);
             Assert.IsTrue(conseguiuEditar);
-            Assert.AreEqual(sessao, registroSelecionado);
-
+            Assert.AreEqual("Planeta dos Gorilas Albinos", registroSelecionado.Filme.Titulo);
+            Assert.IsTrue(registroSelecionado.Filme.Lancamento);
         }
 
 

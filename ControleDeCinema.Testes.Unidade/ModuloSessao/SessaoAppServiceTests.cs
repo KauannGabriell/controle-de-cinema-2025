@@ -468,6 +468,7 @@ public sealed class SessaoAppServiceTests
         var sessao = new Sessao(dateTime.AddHours(5), 90, filme, sala);
         var sessaoTeste = new Sessao(dateTime, 90, filme, sala);
         var idUsuario = new Guid();
+
         repositorioSessaoMock?
             .Setup(r => r.SelecionarRegistrosDoUsuario(idUsuario))
             .Returns(new List<Sessao> { sessaoTeste });
