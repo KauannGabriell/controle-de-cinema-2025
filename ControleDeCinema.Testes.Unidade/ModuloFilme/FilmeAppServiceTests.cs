@@ -206,5 +206,25 @@ public sealed class FilmeAppServiceTests
         Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
         Assert.IsTrue(resultado.IsFailed);
     }
+
+    [TestMethod]
+    public void Excluir_DeveRetornarOk_QuandoIdFilmeForValido()
+    {
+        // Arrange
+        var generoFilme = new GeneroFilme("Ação");
+
+        var filme = new Filme("Titanic", 120, false, generoFilme);
+
+        //Act
+        var resultado = filmeAppService?.Excluir(filme.Id);
+
+        //Assert
+        repositorioFilmeMock?.Verify(r => r.Excluir(filme.Id), Times.Once);
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Once);
+
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
 }
 
