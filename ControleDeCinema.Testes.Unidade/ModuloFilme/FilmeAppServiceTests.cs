@@ -115,7 +115,7 @@ public sealed class FilmeAppServiceTests
         unitOfWorkMock?.Verify(u => u.Rollback(), Times.Once);
 
         Assert.IsNotNull(resultado);
-        Assert.IsTrue(resultado.IsSuccess);
+        Assert.IsFalse(resultado.IsSuccess);
 
         var mensagemErro = resultado.Errors.First().Message;
 

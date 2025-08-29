@@ -9,12 +9,12 @@ namespace ControleDeCinema.Testes.Interface.ModuloDisciplina;
 public sealed class GeneroFilmeInterfaceTests : TestFixture
 {
 
-    [TestMethod]
+    [TestMethod]\
     public void Test()
     {
         driver?.Navigate().GoToUrl("https://localhost:7131/generos");
 
-        var botaoCadastrar = driver?.FindElement(By.CssSelector(".btn-primary"));
+        var botaoCadastrar = driver?.FindElement(By.CssSelector("a[data-se='btnCadastrar']"));
 
         botaoCadastrar?.Click();
     }
