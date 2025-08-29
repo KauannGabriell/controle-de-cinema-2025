@@ -1,15 +1,10 @@
 ﻿
 
-using ControleDeCinema.Aplicacao.ModuloSessao;
 using ControledeCinema.Dominio.Compartilhado;
 using ControleDeCinema.Dominio.ModuloAutenticacao;
-using ControleDeCinema.Dominio.ModuloSessao;
 using Moq;
-using Castle.Core.Logging;
 using Microsoft.Extensions.Logging;
-using ControleDeCinema.Aplicacao.ModuloGeneroFilme;
 using ControleDeCinema.Dominio.ModuloGeneroFilme;
-using ControleDeCinema.Infraestrutura.Orm.ModuloFilme;
 using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Aplicacao.ModuloFilme;
 
