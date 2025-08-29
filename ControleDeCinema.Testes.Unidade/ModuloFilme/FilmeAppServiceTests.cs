@@ -1,17 +1,21 @@
-﻿using ControledeCinema.Dominio.Compartilhado;
-using ControleDeCinema.Aplicacao.ModuloFilme;
-using Microsoft.Extensions.Logging;
-using ControleDeCinema.Dominio.ModuloAutenticacao;
-using ControleDeCinema.Dominio.ModuloFilme;
-using ControleDeCinema.Dominio.ModuloGeneroFilme;
-using Moq;
+﻿
 
+using ControleDeCinema.Aplicacao.ModuloSessao;
+using ControledeCinema.Dominio.Compartilhado;
+using ControleDeCinema.Dominio.ModuloAutenticacao;
+using ControleDeCinema.Dominio.ModuloSessao;
+using Moq;
+using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
+using ControleDeCinema.Aplicacao.ModuloGeneroFilme;
+using ControleDeCinema.Dominio.ModuloGeneroFilme;
+using ControleDeCinema.Infraestrutura.Orm.ModuloFilme;
+using ControleDeCinema.Dominio.ModuloFilme;
+using ControleDeCinema.Aplicacao.ModuloFilme;
 
 namespace ControleDeCinema.Testes.Unidade.ModuloFilme;
-
 [TestClass]
-[TestCategory("Testes de unidade de filme")]
-
+[TestCategory("Teste de unidade de da camada de aplicação do modulo filme")]
 public sealed class FilmeAppServiceTests
 {
 
@@ -62,4 +66,6 @@ public sealed class FilmeAppServiceTests
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsSuccess);
     }
+
 }
+

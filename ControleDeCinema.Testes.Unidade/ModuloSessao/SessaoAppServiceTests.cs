@@ -5,14 +5,11 @@ using ControleDeCinema.Dominio.ModuloAutenticacao;
 using Moq;
 using Microsoft.Extensions.Logging;
 using ControleDeCinema.Dominio.ModuloSessao;
-using ControleDeCinema.Aplicacao.ModuloGeneroFilme;
 using ControleDeCinema.Dominio.ModuloGeneroFilme;
 using ControleDeCinema.Aplicacao.ModuloSessao;
 using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Dominio.ModuloSala;
-using FluentResults;
-using ControleDeCinema.Testes.Unidade.ModuloGeneroFIlme;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 
 namespace ControleDeCinema.Testes.Unidade.ModuloSessao;
 
@@ -73,7 +70,7 @@ public sealed class SessaoAppServiceTests
 
 
     [TestMethod]
-    public void Cadastrar_DeveRetornarFalaha_QuandoNumeroMaximoDeIngressosForMaiorQueASala()
+    public void Cadastrar_DeveRetornarFalha_QuandoNumeroMaximoDeIngressosForMaiorQueASala()
     {
         // Arrange
         var dateTime = new DateTime(2024, 06, 10, 20, 30, 00);
@@ -548,8 +545,8 @@ public sealed class SessaoAppServiceTests
 
         var sessao = new Sessao(dateTime.AddHours(5), 90, filme, sala);
 
-        sessao.Encerrar();
-        repositorioSessaoMock?
+         sessao.Encerrar();
+         repositorioSessaoMock?
         .Setup(r => r.SelecionarRegistroPorId(sessao.Id))
         .Returns(sessao);
 
