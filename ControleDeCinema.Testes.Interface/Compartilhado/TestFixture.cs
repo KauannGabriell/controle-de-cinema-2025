@@ -8,6 +8,8 @@ public abstract class TestFixture
 {
       protected static IWebDriver? driver;
 
+      protected static string enderecoBase = "https://localhost:7131";
+
     [TestInitialize]
     public void ConfigurarTestes()
     {

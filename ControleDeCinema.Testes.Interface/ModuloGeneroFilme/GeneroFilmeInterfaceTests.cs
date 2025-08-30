@@ -1,5 +1,6 @@
 ﻿using ControleDeCinema.Testes.Interface.Compartilhado;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace ControleDeCinema.Testes.Interface.ModuloDisciplina;
 
@@ -8,15 +9,14 @@ namespace ControleDeCinema.Testes.Interface.ModuloDisciplina;
 [TestCategory("Testes de Interface de genero filme")]
 public sealed class GeneroFilmeInterfaceTests : TestFixture
 {
-
-    [TestMethod]\
-    public void Test()
+    [TestMethod]
+    public void Deve_Cadastrar_GeneroFilme_Corretamente()
     {
-        driver?.Navigate().GoToUrl("https://localhost:7131/generos");
+        driver?.Navigate().GoToUrl($"{enderecoBase}/generos");
 
-        var botaoCadastrar = driver?.FindElement(By.CssSelector("a[data-se='btnCadastrar']"));
-
-        botaoCadastrar?.Click();
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+        var botaoCadastrar = wait.Until(drv => drv.FindElement(By.CssSelector("a[data-se='btnCadastrar']")));
+        botaoCadastrar.Click();
     }
 }
 
