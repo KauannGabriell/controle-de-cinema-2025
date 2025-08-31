@@ -1,11 +1,10 @@
 ﻿using ControleDeCinema.Dominio.ModuloGeneroFilme;
 using ControleDeCinema.Dominio.ModuloFilme;
 
-
 namespace ControleDeCinema.Testes.Unidade.ModuloFilme;
 
 [TestClass]
-[TestCategory("Testes de unidade de genero filme")]
+[TestCategory("Testes de unidade de filme")]
 public sealed class FilmeTests
 {
 
