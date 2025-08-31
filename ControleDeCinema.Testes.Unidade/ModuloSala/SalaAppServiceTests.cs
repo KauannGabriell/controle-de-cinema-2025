@@ -1,5 +1,6 @@
 ﻿using ControledeCinema.Dominio.Compartilhado;
 using ControleDeCinema.Aplicacao.ModuloFilme;
+using ControleDeCinema.Aplicacao.ModuloGeneroFilme;
 using ControleDeCinema.Aplicacao.ModuloSala;
 using ControleDeCinema.Dominio.ModuloAutenticacao;
 using ControleDeCinema.Dominio.ModuloFilme;
@@ -139,5 +140,29 @@ public sealed class SalaAppServiceTests
 
         Assert.IsNotNull(resultado);
         Assert.IsTrue(resultado.IsSuccess);
+    }
+
+    [TestMethod]
+    public void Editar_DeveRetornarFalha_QuandoSalaForDuplicada()
+    {
+        // Arrange
+        var sala = new Sala(1,20);
+        var salaTeste = new Sala(1,20);
+        var salaEditado = new Sala(1, 20);
+
+        repositorioSalaMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Sala>() { salaTeste });
+
+        // Act
+        var resultado = salaAppService?.Editar(sala.Id, salaEditado);
+
+        // Assert
+        repositorioSalaMock?.Verify(r => r.Editar(sala.Id, salaEditado), Times.Never);
+
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Never);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsFailed);
     }
 }    
