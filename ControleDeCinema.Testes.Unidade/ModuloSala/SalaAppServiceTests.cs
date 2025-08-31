@@ -318,5 +318,24 @@ public sealed class SalaAppServiceTests
         Assert.IsTrue(resultado.IsFailed);
     }
 
+    [TestMethod]
+    public void SelecionarTodos_DeveRetornarOk_QuandoOCorrerTudoCorretamente()
+    {
+        // Arrange
+
+        var sala = new Sala(1,15);
+        var salaTeste = new Sala(2,30);
+        repositorioSalaMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Sala> { sala });
+
+        //Act
+        var resultado = salaAppService?.SelecionarTodos();
+
+        //Assert
+        repositorioSalaMock?.Verify(r => r.SelecionarRegistros(), Times.Once);
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
 
 }    
