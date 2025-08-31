@@ -197,4 +197,25 @@ public sealed class SalaAppServiceTests
         Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
         Assert.IsTrue(resultado.IsFailed);
     }
+
+    [TestMethod]
+    public void Excluir_DeveRetornarOk_QuandoIdSalaForValida()
+    {
+        // Arrange
+
+        var sala = new Sala(1,25);
+
+        //Act
+        var resultado = salaAppService?.Excluir(sala.Id);
+
+        //Assert
+        repositorioSalaMock?.Verify(r => r.Excluir(sala.Id), Times.Once);
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Once);
+
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
+
+
 }    
