@@ -305,7 +305,7 @@ public sealed class FilmeAppServiceTests
         var filme = new Filme("Titanic", 120, false, generoFilme);
         var filmeTeste = new Filme("Titanic", 120, false, generoFilme);
         repositorioFilmeMock?
-            .Setup(r => r.SelecionarRegistroPorId(generoFilme.Id))
+            .Setup(r => r.SelecionarRegistroPorId(filme.Id))
             .Returns(filmeTeste);
 
 
