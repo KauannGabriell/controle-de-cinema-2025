@@ -85,4 +85,36 @@ public sealed class SalaAppServiceTests
         Assert.IsTrue(resultado.IsFailed);
     }
 
+    [TestMethod]
+    public void Cadastrar_DeveRetornarFalha_QuandoExcecaoForLancada()
+    {
+        // Arrange
+
+        var sala = new Sala(1,50);
+
+        repositorioSalaMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Sala>());
+
+        unitOfWorkMock?
+            .Setup(r => r.Commit())
+            .Throws(new Exception("Erro Esperado"));
+
+        // Act
+        var resultado = salaAppService?.Cadastrar(sala);
+
+        // Assert
+        repositorioSalaMock?.Verify(r => r.Cadastrar(sala), Times.Once);
+
+        unitOfWorkMock?.Verify(u => u.Rollback(), Times.Once);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsFalse(resultado.IsSuccess);
+
+        var mensagemErro = resultado.Errors.First().Message;
+
+        Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
+        Assert.IsTrue(resultado.IsFailed);
+    }
+
 }    
