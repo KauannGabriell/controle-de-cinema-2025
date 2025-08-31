@@ -217,5 +217,32 @@ public sealed class SalaAppServiceTests
         Assert.IsTrue(resultado.IsSuccess);
     }
 
+    [TestMethod]
+    public void Excluir_DeveRetornarFalha_QuandoExcecaoForLancada()
+    {
+        // Arrange
+
+        var sala = new Sala(1,20);
+
+
+        unitOfWorkMock?
+            .Setup(r => r.Commit())
+            .Throws(new Exception("Erro Esperado"));
+
+        // Act
+        var resultado = salaAppService?.Excluir(sala.Id);
+
+        // Assert
+        unitOfWorkMock?.Verify(u => u.Rollback(), Times.Once);
+        repositorioSalaMock?.Verify(r => r.Excluir(sala.Id), Times.Once);
+
+        Assert.IsNotNull(resultado);
+
+        var mensagemErro = resultado.Errors.First().Message;
+
+        Assert.AreEqual("Ocorreu um erro interno do servidor", mensagemErro);
+        Assert.IsTrue(resultado.IsFailed);
+    }
+
 
 }    
