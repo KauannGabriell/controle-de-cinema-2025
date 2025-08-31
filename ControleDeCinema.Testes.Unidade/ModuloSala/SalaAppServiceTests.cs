@@ -244,5 +244,24 @@ public sealed class SalaAppServiceTests
         Assert.IsTrue(resultado.IsFailed);
     }
 
+    [TestMethod]
+    public void SelecionarPorId_DeveRetornarOk_QuandoIdSalaForValida()
+    {
+        // Arrange
+
+        var sala = new Sala(1,50);
+        var salaTeste = new Sala(2,35);
+        repositorioSalaMock?
+            .Setup(r => r.SelecionarRegistroPorId(sala.Id))
+            .Returns(salaTeste);
+
+        //Act
+        var resultado = salaAppService?.SelecionarPorId(sala.Id);
+
+        //Assert
+        repositorioSalaMock?.Verify(r => r.SelecionarRegistroPorId(sala.Id), Times.Once);
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
 
 }    
