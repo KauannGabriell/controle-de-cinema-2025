@@ -264,4 +264,29 @@ public sealed class SalaAppServiceTests
         Assert.IsTrue(resultado.IsSuccess);
     }
 
+    [TestMethod]
+    public void SelecionarPorId_DeveRetornarFalha_QuandoSalaNaoForEncontrada()
+    {
+        // Arrange
+
+        var sala = new Sala(1,20);
+
+        repositorioSalaMock?
+            .Setup(r => r.SelecionarRegistroPorId(sala.Id))
+            .Returns((Sala?)null);
+
+        // Act
+        var resultado = salaAppService?.SelecionarPorId(sala.Id);
+
+        // Assert
+        repositorioSalaMock?.Verify(r => r.SelecionarRegistroPorId(sala.Id), Times.Once);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsFailed);
+
+        var erro = resultado.Errors.First();
+
+        Assert.AreEqual("Registro não encontrado", erro.Message);
+    }
+
 }    
