@@ -61,6 +61,28 @@ public sealed class SalaAppServiceTests
         Assert.IsTrue(resultado.IsSuccess);
     }
 
+    [TestMethod]
+    public void Cadastrar_DeveRetornarFalha_QuandoSalaForDuplicada()
+    {
+        // Arrange
 
+        var sala = new Sala(1,30);
+        var salaTeste = new Sala(1,30);
+
+        repositorioSalaMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Sala>() { salaTeste });
+
+        // Act
+        var resultado = salaAppService?.Cadastrar(sala);
+
+        // Assert
+        repositorioSalaMock?.Verify(r => r.Cadastrar(sala), Times.Never);
+
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Never);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsFailed);
+    }
 
 }    
