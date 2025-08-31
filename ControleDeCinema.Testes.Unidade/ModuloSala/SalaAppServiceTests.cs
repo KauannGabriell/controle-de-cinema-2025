@@ -1,10 +1,6 @@
 ﻿using ControledeCinema.Dominio.Compartilhado;
-using ControleDeCinema.Aplicacao.ModuloFilme;
-using ControleDeCinema.Aplicacao.ModuloGeneroFilme;
 using ControleDeCinema.Aplicacao.ModuloSala;
 using ControleDeCinema.Dominio.ModuloAutenticacao;
-using ControleDeCinema.Dominio.ModuloFilme;
-using ControleDeCinema.Dominio.ModuloGeneroFilme;
 using ControleDeCinema.Dominio.ModuloSala;
 using Microsoft.Extensions.Logging;
 using Moq;
