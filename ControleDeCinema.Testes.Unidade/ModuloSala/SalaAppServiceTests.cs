@@ -117,4 +117,27 @@ public sealed class SalaAppServiceTests
         Assert.IsTrue(resultado.IsFailed);
     }
 
+    [TestMethod]
+    public void Editar_DeveRetornarOk_QuandoSalaForValida()
+    {
+        // Arrange
+
+        var sala = new Sala(1,30);
+        var salaTeste = new Sala(2,15);
+        var salaEditado = new Sala(3,25);
+
+        repositorioSalaMock?
+            .Setup(r => r.SelecionarRegistros())
+            .Returns(new List<Sala>() { salaTeste });
+
+        //Act
+        var resultado = salaAppService?.Editar(sala.Id, salaEditado);
+
+        //Assert
+        repositorioSalaMock?.Verify(r => r.Editar(sala.Id, salaEditado), Times.Once);
+        unitOfWorkMock?.Verify(u => u.Commit(), Times.Once);
+
+        Assert.IsNotNull(resultado);
+        Assert.IsTrue(resultado.IsSuccess);
+    }
 }    
