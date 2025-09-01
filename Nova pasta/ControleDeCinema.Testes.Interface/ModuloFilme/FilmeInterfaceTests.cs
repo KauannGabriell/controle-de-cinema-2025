@@ -1,27 +1,24 @@
 ﻿
+using ControleDeCinema.Testes.Interface.ModuloGeneroFilme;
 using TesteFacil.Testes.Interface.Compartilhado;
 using TesteFacil.Testes.Interface.ModuloDisciplina;
 
-namespace ControleDeCinema.Testes.Interface.ModuloGeneroFilme;
+namespace ControleDeCinema.Testes.Interface.ModuloFilme;
 
 [TestClass]
-[TestCategory("Teste de interface do modulo genero filme")]
-public sealed class GeneroFilmeInterfaceTests : TestFixture
+[TestCategory("Teste de interface do modulo filme")]
+public sealed class FilmeInterfaceTests : TestFixture
 {
 
     [TestMethod]
-    public void Deve_Cadastrar_GeneroFilme()
+    public void Deve_Cadastrar_Filme()
     {
+
         //Arrange
         var autenticacaoIndex = new AutenticacaoIndexPageObjects(driver);
-
         autenticacaoIndex.IrPara(enderecoBase);
-
         var autenticacaoForm = new AutenticacaoFormPageObject(driver);
-
         autenticacaoForm
-
-         //Não estava conseguindo apagar a tabela dos usuarios então fiz um metodo para criar um email aleatorio
          .PreencherEmail()
          .PreencherSenha("gV12345678")
          .PreencherConfimarSenha("gV12345678")
@@ -32,30 +29,38 @@ public sealed class GeneroFilmeInterfaceTests : TestFixture
         generoFilmeIndex.IrPara(enderecoBase);
         generoFilmeIndex.ClickCadastrar();
 
-
-        //Act
         var generoFilmeForm = new GeneroFilmeFormPageObject(driver);
         generoFilmeForm
          .PreencherDescricao("Ação")
          .ConfirmarCadastro();
 
+        var filmeIndex = new FilmeIndexPageObject(driver);
+        filmeIndex.IrPara(enderecoBase);
+        filmeIndex.ClickCadastrar();
+
+        //Act
+        var filmeForm = new FilmeFormPageObject(driver);
+
+        filmeForm
+         .PreencherTitulo("Vingadores")
+         .PreencherDuracao("02:30")
+         .SelecionarGenero("Ação")
+         .ConfirmarCadastro();
+
+
         //Assert
-        Assert.IsTrue(generoFilmeIndex.ContemGeneroFilme("Ação"));
+        Assert.IsTrue(filmeIndex.ContemFilme("Vingadores"));
     }
 
     [TestMethod]
-    public void Deve_Editar_GeneroFilme()
+    public void Deve_Editar_Filme()
     {
+
         //Arrange
         var autenticacaoIndex = new AutenticacaoIndexPageObjects(driver);
-
-
         autenticacaoIndex.IrPara(enderecoBase);
-
         var autenticacaoForm = new AutenticacaoFormPageObject(driver);
-
         autenticacaoForm
-
          .PreencherEmail()
          .PreencherSenha("gV12345678")
          .PreencherConfimarSenha("gV12345678")
@@ -63,8 +68,6 @@ public sealed class GeneroFilmeInterfaceTests : TestFixture
          .Confirmar();
 
         var generoFilmeIndex = new GeneroFilmeIndexPageObject(driver);
-        string enderecoCadastrar = "cadastrar";
-
         generoFilmeIndex.IrPara(enderecoBase);
         generoFilmeIndex.ClickCadastrar();
 
@@ -73,29 +76,40 @@ public sealed class GeneroFilmeInterfaceTests : TestFixture
          .PreencherDescricao("Ação")
          .ConfirmarCadastro();
 
-     
+        var filmeIndex = new FilmeIndexPageObject(driver);
+        filmeIndex.IrPara(enderecoBase);
+        filmeIndex.ClickCadastrar();
 
-        generoFilmeIndex.IrPara(enderecoBase);
-        generoFilmeIndex.ClickEditar();
+        var filmeForm = new FilmeFormPageObject(driver);
+
+        filmeForm
+         .PreencherTitulo("Vingadores")
+         .PreencherDuracao("02:30")
+         .SelecionarGenero("Ação")
+         .ConfirmarCadastro();
 
         //Act
-        generoFilmeForm
-         .PreencherDescricao("Comédia Editada")
+        filmeIndex.ClickEditar();
+
+        filmeForm
+         .PreencherTitulo("Vingadores 2")
+         .PreencherDuracao("02:40")
+         .SelecionarGenero("Ação")
          .ConfirmarCadastro();
 
         //Assert
-        Assert.IsTrue(generoFilmeIndex.ContemGeneroFilme("Comédia Editada"));
-
+        Assert.IsTrue(filmeIndex.ContemFilme("Vingadores 2"));
     }
+
     [TestMethod]
-    public void Deve_Excluir_GeneroFilme()
+    public void Deve_Excluir_Filme()
     {
         //Arrange
         var autenticacaoIndex = new AutenticacaoIndexPageObjects(driver);
-
         autenticacaoIndex.IrPara(enderecoBase);
         var autenticacaoForm = new AutenticacaoFormPageObject(driver);
-        autenticacaoForm.PreencherEmail()
+        autenticacaoForm
+         .PreencherEmail()
          .PreencherSenha("gV12345678")
          .PreencherConfimarSenha("gV12345678")
          .PreencherTipoCliente("Empresa")
@@ -104,18 +118,30 @@ public sealed class GeneroFilmeInterfaceTests : TestFixture
         var generoFilmeIndex = new GeneroFilmeIndexPageObject(driver);
         generoFilmeIndex.IrPara(enderecoBase);
         generoFilmeIndex.ClickCadastrar();
+
         var generoFilmeForm = new GeneroFilmeFormPageObject(driver);
         generoFilmeForm
          .PreencherDescricao("Ação")
          .ConfirmarCadastro();
 
-        generoFilmeIndex.IrPara(enderecoBase);
+        var filmeIndex = new FilmeIndexPageObject(driver);
+        filmeIndex.IrPara(enderecoBase);
+        filmeIndex.ClickCadastrar();
+
+        var filmeForm = new FilmeFormPageObject(driver);
+
+        filmeForm
+         .PreencherTitulo("Vingadores")
+         .PreencherDuracao("02:30")
+         .SelecionarGenero("Ação")
+         .ConfirmarCadastro();
 
         //Act
-        generoFilmeIndex.ClickExcluir();
-            generoFilmeForm.ConfirmarExclusao();
 
+        filmeIndex.ClickExcluir();
+        filmeForm.ConfirmarExclusao();
+        
         //Assert
-        Assert.IsFalse(generoFilmeIndex.ContemGeneroFilme("Ação"));
+        Assert.IsFalse(filmeIndex.ContemFilme("Vingadores"));
     }
 }

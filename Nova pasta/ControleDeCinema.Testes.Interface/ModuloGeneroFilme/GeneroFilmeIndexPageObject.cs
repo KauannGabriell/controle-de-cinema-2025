@@ -1,14 +1,17 @@
 ﻿
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace ControleDeCinema.Testes.Interface.ModuloGeneroFilme;
 
 public class GeneroFilmeIndexPageObject
 {
     private readonly IWebDriver? driver;
+    private readonly WebDriverWait wait;
     public GeneroFilmeIndexPageObject(IWebDriver? driver)
     {
         this.driver = driver;
+        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
     }
     public GeneroFilmeIndexPageObject IrPara(string enderecoBase)
     {
@@ -24,22 +27,19 @@ public class GeneroFilmeIndexPageObject
 
     public GeneroFilmeFormPageObject ClickCadastrar()
     {
-        driver?.FindElement(By.CssSelector("a[data-se=\"btnCadastrar\"]")).Click();
-
+        wait.Until(d => d.FindElement(By.CssSelector("a[data-se='btnCadastrar']"))).Click();
         return new GeneroFilmeFormPageObject(driver!);
     }
 
     public GeneroFilmeFormPageObject ClickEditar()
     {
-        driver?.FindElement(By.CssSelector(".card a[title='Edição'] ")).Click();
-
+        wait.Until(d => d.FindElement(By.CssSelector("a[data-se='btnEditar']"))).Click();
         return new GeneroFilmeFormPageObject(driver!);
     }
 
     public GeneroFilmeFormPageObject ClickExcluir()
     {
-        driver?.FindElement(By.CssSelector(".card a[title='Exclusão'] ")).Click();
-
+        wait.Until(d => d.FindElement(By.CssSelector("a[data-se='btnExcluir']"))).Click();
         return new GeneroFilmeFormPageObject(driver!);
     }
 
