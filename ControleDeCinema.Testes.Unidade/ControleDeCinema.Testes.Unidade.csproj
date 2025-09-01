@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ControleDeCinema.Aplicacao\ControleDeCinema.Aplicacao.csproj" />
     <ProjectReference Include="..\ControleDeCinema.Dominio\ControleDeCinema.Dominio.csproj" />
+    <ProjectReference Include="..\Nova pasta\ControleDeCinema.Testes.Interface\ControleDeCinema.Testes.Interface.csproj" />
   </ItemGroup>
 
   <ItemGroup>

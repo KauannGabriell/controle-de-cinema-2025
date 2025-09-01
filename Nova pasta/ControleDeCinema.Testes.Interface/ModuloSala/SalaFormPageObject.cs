@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ControleDeCinema.Testes.Interface.ModuloGeneroFilme;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 

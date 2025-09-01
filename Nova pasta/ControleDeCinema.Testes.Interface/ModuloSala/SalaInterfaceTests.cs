@@ -1,5 +1,5 @@
-﻿using TesteFacil.Testes.Interface.Compartilhado;
-using TesteFacil.Testes.Interface.ModuloDisciplina;
+﻿using ControleDeCinema.Testes.Interface.Compartilhado;
+using ControleDeCinema.Testes.Interface.ModuloAutenticacao;
 
 namespace ControleDeCinema.Testes.Interface.ModuloSala;
 

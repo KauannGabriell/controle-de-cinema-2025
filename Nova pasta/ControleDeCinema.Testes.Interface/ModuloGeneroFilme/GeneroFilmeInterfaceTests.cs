@@ -1,6 +1,6 @@
 ﻿
-using TesteFacil.Testes.Interface.Compartilhado;
-using TesteFacil.Testes.Interface.ModuloDisciplina;
+using ControleDeCinema.Testes.Interface.Compartilhado;
+using ControleDeCinema.Testes.Interface.ModuloAutenticacao;
 
 namespace ControleDeCinema.Testes.Interface.ModuloGeneroFilme;
 
@@ -8,7 +8,6 @@ namespace ControleDeCinema.Testes.Interface.ModuloGeneroFilme;
 [TestCategory("Teste de interface do modulo genero filme")]
 public sealed class GeneroFilmeInterfaceTests : TestFixture
 {
-
     [TestMethod]
     public void Deve_Cadastrar_GeneroFilme()
     {

@@ -1,7 +1,7 @@
 ﻿
+using ControleDeCinema.Testes.Interface.Compartilhado;
+using ControleDeCinema.Testes.Interface.ModuloAutenticacao;
 using ControleDeCinema.Testes.Interface.ModuloGeneroFilme;
-using TesteFacil.Testes.Interface.Compartilhado;
-using TesteFacil.Testes.Interface.ModuloDisciplina;
 
 namespace ControleDeCinema.Testes.Interface.ModuloFilme;
 

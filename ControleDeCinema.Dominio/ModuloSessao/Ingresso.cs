@@ -25,5 +25,6 @@ public class Ingresso : EntidadeBase<Ingresso>
     {
         NumeroAssento = registroEditado.NumeroAssento;
         MeiaEntrada = registroEditado.MeiaEntrada;
+        Sessao = registroEditado.Sessao;
     }
 }
