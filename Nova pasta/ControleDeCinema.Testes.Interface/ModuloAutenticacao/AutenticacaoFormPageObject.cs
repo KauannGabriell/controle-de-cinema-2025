@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
-using TesteFacil.Testes.Interface.ModuloDisciplina;
-using System;
+namespace ControleDeCinema.Testes.Interface.ModuloAutenticacao;
 
 public class AutenticacaoFormPageObject
 {

@@ -2,7 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace TesteFacil.Testes.Interface.Compartilhado;
+namespace ControleDeCinema.Testes.Interface.Compartilhado;
 
 [TestClass]
 public abstract class TestFixture

@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace TesteFacil.Testes.Interface.ModuloDisciplina;
+namespace ControleDeCinema.Testes.Interface.ModuloAutenticacao;
 public sealed class AutenticacaoIndexPageObjects
 {
     private readonly IWebDriver? driver;
