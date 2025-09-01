@@ -2,7 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace ControleDeCinema.Testes.Interface.ModuloGeneroFilme;
+namespace ControleDeCinema.Testes.Interface.ModuloSala;
 
 public class SalaIndexPageObject
 {

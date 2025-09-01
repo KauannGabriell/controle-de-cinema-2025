@@ -2,7 +2,7 @@
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 
-namespace ControleDeCinema.Testes.Interface.ModuloGeneroFilme
+namespace ControleDeCinema.Testes.Interface.ModuloSala
 {
     public class SalaFormPageObject
     {

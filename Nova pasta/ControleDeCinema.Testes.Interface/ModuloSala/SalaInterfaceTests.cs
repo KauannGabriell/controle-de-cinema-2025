@@ -1,7 +1,7 @@
 ﻿using TesteFacil.Testes.Interface.Compartilhado;
 using TesteFacil.Testes.Interface.ModuloDisciplina;
 
-namespace ControleDeCinema.Testes.Interface.ModuloGeneroFilme;
+namespace ControleDeCinema.Testes.Interface.ModuloSala;
 
 [TestClass]
 [TestCategory("Teste de interface do modulo sala")]
