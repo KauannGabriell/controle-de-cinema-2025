@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleDeCinema.Testes.Uni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleDeCinema.Testes.Infraestrutura", "ControleDeCinema.Testes.Infraestrutura\ControleDeCinema.Testes.Infraestrutura.csproj", "{5346A858-8DC3-4B41-A31B-87252293FF0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleDeCinema.Testes.Interface", "ControleDeCinema.Testes.Interface\ControleDeCinema.Testes.Interface.csproj", "{89057C4A-86A6-441D-8CD1-8A66FBEB4D8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleDeCinema.Testes.Interface", "Nova pasta\ControleDeCinema.Testes.Interface\ControleDeCinema.Testes.Interface.csproj", "{9103C9A7-84F0-4EB7-AF5A-BF9982E3D4E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,10 +55,10 @@ Global
 		{5346A858-8DC3-4B41-A31B-87252293FF0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5346A858-8DC3-4B41-A31B-87252293FF0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5346A858-8DC3-4B41-A31B-87252293FF0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{89057C4A-86A6-441D-8CD1-8A66FBEB4D8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{89057C4A-86A6-441D-8CD1-8A66FBEB4D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{89057C4A-86A6-441D-8CD1-8A66FBEB4D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{89057C4A-86A6-441D-8CD1-8A66FBEB4D8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9103C9A7-84F0-4EB7-AF5A-BF9982E3D4E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9103C9A7-84F0-4EB7-AF5A-BF9982E3D4E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9103C9A7-84F0-4EB7-AF5A-BF9982E3D4E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9103C9A7-84F0-4EB7-AF5A-BF9982E3D4E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,7 +70,7 @@ Global
 		{EAE3E615-3E4F-4EC0-8849-D69EF8746A21} = {C9BFEEE7-782F-44A7-BE24-A0547110B7C2}
 		{27F1884B-211D-4585-8585-DED38AA10281} = {F788B0E8-B092-438E-AC4A-440D25D44560}
 		{5346A858-8DC3-4B41-A31B-87252293FF0D} = {F788B0E8-B092-438E-AC4A-440D25D44560}
-		{89057C4A-86A6-441D-8CD1-8A66FBEB4D8C} = {F788B0E8-B092-438E-AC4A-440D25D44560}
+		{9103C9A7-84F0-4EB7-AF5A-BF9982E3D4E1} = {F788B0E8-B092-438E-AC4A-440D25D44560}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {97011726-34E8-4F39-ACF8-32120C5EDAC2}
