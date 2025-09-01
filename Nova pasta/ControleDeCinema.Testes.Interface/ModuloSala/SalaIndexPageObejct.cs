@@ -19,27 +19,55 @@ public class SalaIndexPageObject
         driver?.Navigate().GoToUrl(Path.Combine(enderecoBase, "salas"));
         return this;
     }
-    public bool ContemSala(string nome)
+    public bool ContemSala(string numeroSala)
     {
-        return driver.PageSource.Contains(nome);
+        return driver.PageSource.Contains(numeroSala);
     }
 
-    public GeneroFilmeFormPageObject ClickCadastrar()
+    public SalaFormPageObject ClickCadastrar()
     {
         wait.Until(d => d.FindElement(By.CssSelector("a[data-se='btnCadastrar']"))).Click();
-        return new GeneroFilmeFormPageObject(driver!);
+        return new SalaFormPageObject(driver!);
     }
 
-    public GeneroFilmeFormPageObject ClickEditar()
+    public SalaFormPageObject ClickEditar()
     {
         wait.Until(d => d.FindElement(By.CssSelector("a[data-se='btnEditar']"))).Click();
-        return new GeneroFilmeFormPageObject(driver!);
+        return new SalaFormPageObject(driver!);
     }
 
-    public GeneroFilmeFormPageObject ClickExcluir()
+    public SalaFormPageObject ClickExcluir()
     {
         wait.Until(d => d.FindElement(By.CssSelector("a[data-se='btnExcluir']"))).Click();
-        return new GeneroFilmeFormPageObject(driver!);
+        return new SalaFormPageObject(driver!);
     }
+
+    public void Confirmar()
+    {
+        var botaoConfirmar = new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+            .Until(d =>
+            {
+                try
+                {
+                    var element = d.FindElement(By.CssSelector("button[type='submit']"));
+                    return (element.Displayed && element.Enabled) ? element : null;
+                }
+                catch
+                {
+                    return null;
+                }
+            });
+
+        ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", botaoConfirmar);
+        try
+        {
+            botaoConfirmar.Click();
+        }
+        catch (ElementClickInterceptedException)
+        {
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", botaoConfirmar);
+        }
+    }
+
 
 }

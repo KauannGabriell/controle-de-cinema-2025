@@ -2,7 +2,6 @@
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 
-
 namespace ControleDeCinema.Testes.Interface.ModuloGeneroFilme
 {
     public class SalaFormPageObject
@@ -16,13 +15,14 @@ namespace ControleDeCinema.Testes.Interface.ModuloGeneroFilme
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
-        public SalaFormPageObject PreencherNome(string nome)
+        public SalaFormPageObject PreencherNumero(string numero)
         {
-            var inputNome = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Número")));
-            inputNome.Clear();
-            inputNome.SendKeys(nome);
+            var inputNumero = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Numero")));
+            inputNumero.Clear();
+            inputNumero.SendKeys(numero);
             return this;
         }
+
         public SalaFormPageObject PreencherCapacidade(string capacidade)
         {
             var inputCapacidade = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Capacidade")));
@@ -31,29 +31,25 @@ namespace ControleDeCinema.Testes.Interface.ModuloGeneroFilme
             return this;
         }
 
-
-        public void ConfirmarCadastro()
+        public GeneroFilmeFormPageObject ClickCadastrar()
         {
-            ClicarBotao("button.btn-primary[type='submit']");
+            driver?.FindElement(By.CssSelector("a[data-se=\"btnCadastrar\"]")).Click();
+
+            return new GeneroFilmeFormPageObject(driver!);
         }
 
-        public void ConfirmarExclusao()
+        public GeneroFilmeFormPageObject ClickEditar()
         {
-            ClicarBotao("button.btn-danger[type='submit']");
+            driver?.FindElement(By.CssSelector(".card a[title='Edição'] ")).Click();
+
+            return new GeneroFilmeFormPageObject(driver!);
         }
 
-        private void ClicarBotao(string seletor)
+        public GeneroFilmeFormPageObject ClickExcluir()
         {
-            var botao = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(seletor)));
-            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", botao);
-            try
-            {
-                botao.Click();
-            }
-            catch (ElementClickInterceptedException)
-            {
-                ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", botao);
-            }
+            driver?.FindElement(By.CssSelector(".card a[title='Exclusão'] ")).Click();
+
+            return new GeneroFilmeFormPageObject(driver!);
         }
     }
 }

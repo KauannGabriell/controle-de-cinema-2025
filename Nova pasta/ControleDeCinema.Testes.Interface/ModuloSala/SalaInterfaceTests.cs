@@ -31,11 +31,77 @@ public sealed class SalaInterfaceTests : TestFixture
         var salaForm = new SalaFormPageObject(driver);
 
         salaForm
-         .PreencherNome("Sala 1")
-         .PreencherCapacidade("100")
-         .ConfirmarCadastro();
-        //Assert
-        Assert.IsTrue(salaIndex.ContemSala("Sala 1"));
+         .PreencherNumero("10")
+         .PreencherCapacidade("100");
 
+        salaIndex
+         .Confirmar();
+        //Assert
+        Assert.IsTrue(salaIndex.ContemSala("10"));
+
+    }
+    [TestMethod]
+    public void Deve_Editar_Sala()
+    {
+        //Arrange
+        var autenticacaoIndex = new AutenticacaoIndexPageObjects(driver);
+        autenticacaoIndex.IrPara(enderecoBase);
+        var autenticacaoForm = new AutenticacaoFormPageObject(driver);
+        autenticacaoForm
+         //Não estava conseguindo apagar a tabela dos usuarios então fiz um metodo para criar um email aleatorio
+         .PreencherEmail()
+         .PreencherSenha("gV12345678")
+         .PreencherConfimarSenha("gV12345678")
+         .PreencherTipoCliente("Empresa")
+         .Confirmar();
+        var salaIndex = new SalaIndexPageObject(driver);
+        salaIndex.IrPara(enderecoBase);
+        salaIndex.ClickCadastrar();
+        var salaForm = new SalaFormPageObject(driver);
+        salaForm
+         .PreencherNumero("10")
+         .PreencherCapacidade("100")
+         .ClickCadastrar();
+
+        //Act
+        salaIndex.ClickEditar();
+
+        salaForm
+         .PreencherNumero("30")
+         .PreencherCapacidade("150");
+
+        salaIndex.ClickCadastrar();
+
+        //Assert
+        Assert.IsTrue(salaIndex.ContemSala("30"));
+    }
+    [TestMethod]
+    public void Deve_Excluir_Sala()
+    {
+        //Arrange
+        var autenticacaoIndex = new AutenticacaoIndexPageObjects(driver);
+        autenticacaoIndex.IrPara(enderecoBase);
+        var autenticacaoForm = new AutenticacaoFormPageObject(driver);
+        autenticacaoForm
+         //Não estava conseguindo apagar a tabela dos usuarios então fiz um metodo para criar um email aleatorio
+         .PreencherEmail()
+         .PreencherSenha("gV12345678")
+         .PreencherConfimarSenha("gV12345678")
+         .PreencherTipoCliente("Empresa")
+         .Confirmar();
+        var salaIndex = new SalaIndexPageObject(driver);
+        salaIndex.IrPara(enderecoBase);
+        salaIndex.ClickCadastrar();
+        var salaForm = new SalaFormPageObject(driver);
+        salaForm
+         .PreencherNumero("10")
+         .PreencherCapacidade("100")
+         .ClickCadastrar();
+
+        //Act
+        salaIndex.ClickExcluir();
+
+        //Assert
+        Assert.IsFalse(salaIndex.ContemSala("10"));
     }
 }
