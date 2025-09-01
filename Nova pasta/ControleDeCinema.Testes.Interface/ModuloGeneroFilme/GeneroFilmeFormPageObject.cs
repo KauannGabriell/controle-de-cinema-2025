@@ -18,7 +18,6 @@ namespace ControleDeCinema.Testes.Interface.ModuloGeneroFilme
 
         public GeneroFilmeFormPageObject PreencherDescricao(string descricao)
         {
-            // Espera o input estar visível
             var inputDescricao = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Descricao")));
             inputDescricao.Clear();
             inputDescricao.SendKeys(descricao);
